@@ -1,0 +1,11 @@
+{
+  "name": "completebackedcode",
+  "version": "1.0.0",
+  "description": "full backend code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vishal",
+  "license": "ISC"
+}
