@@ -59,12 +59,19 @@ const userSchema = new mongoose.Schema({
     refreshtoken: {
         type: String,
     },
-    generatedToken: String,
-    generatedTokenExpiry: Date,
+    generatedToken: {
+        type: String
+    },
+
+    generatedTokenExpiry: {
+        type: Date
+    },
+
     isActive: {
         type: Boolean,
         default: false
     }
+
 }, {
     timestamps: true,
 });
