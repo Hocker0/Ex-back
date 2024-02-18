@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"    // used for connect cross origin
-// import cookieParser from "cookie-parser"   //used for read cookies or cookies operations
+import cookieParser from "cookie-parser"   //used for read cookies or cookies operations
 
 const app = express();
 // cross origin setup
@@ -17,12 +17,14 @@ app.use(express.static("public"))  //agar koi img,file aata hai to usse hum publ
 
 //cookie configaration(for save data in cookies and fetch it)
 
-// app.use(express.cookieParser)
+app.use(cookieParser())
 
 // user routes import
 import userRouter from "./routes/user.routes.js"
+import contactRouter from "./routes/contact.routes.js"
 
 // user routes declation
 app.use("/api/v1/users", userRouter)
+app.use("/api/v1", contactRouter);
 
 export{ app }
