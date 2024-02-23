@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshTokens = async(userId) =>{
     try{
@@ -32,10 +33,10 @@ const registerUser = asyncHandler(async (req, res) => {
     //check for user creation
     //return res
 
-    const { username, email, avatar, password, category } = req.body;
+    const { username, email, password, category } = req.body;
 
     if (
-        [username, email, avatar, password, category].some((field) => field?.trim === "")
+        [username, email, password, category].some((field) => field?.trim === "")
     ) {
         throw new ApiError(400, "All fields are required");
     }
@@ -56,25 +57,23 @@ const registerUser = asyncHandler(async (req, res) => {
         await User.deleteOne({ username });
     }
 
-    // code for upload avatar image and cover image
-    //     const avatarlocalpath = req.files?.avatar[0]?.path;
-    //     const coverImageLocalPath = req.files?.coverImage[0]?.coverImage[0]?.path;
+    // code for upload avatar image and
+    const avatarLocalPath = req.files?.avatar[0]?.path;
+    //  console.log("avatarpath: "+ avatarLocalPath);
+        if (!avatarLocalPath) {
+            throw new ApiError(400, "Avatar file is compulsary")
+        }
 
-    //     if (!avatarlocalpath) {
-    //         throw new ApiError(400, "Avatar file is compulsary")
-    //     }
-
-    //   const avatar =  await uploadOnCloudinary(avatarlocalpath)
-    //   const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-
-    //   if (!avatarlocalpath) {
-    //     throw new ApiError(400, "Avatar file is compulsary")
-    // }
+      const avatar =  await uploadOnCloudinary(avatarLocalPath)
+    //   console.log("this is from avatar"+ avatar);
+      if (!avatar) {
+        throw new ApiError(400, "Avatar file is compulsary")
+    }
 
     await User.create({
         username,
         email,
-        avatar,
+        avatar: avatar.url,
         password,
         category
     })
